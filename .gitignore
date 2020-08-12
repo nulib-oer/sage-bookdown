@@ -1,3 +1,8 @@
+# Bookdown files
+_book
+_publish.R
+_book
+
 # History files
 .Rhistory
 .Rapp.history
