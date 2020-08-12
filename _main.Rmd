@@ -1,0 +1,56 @@
+---
+title: "Bookdown with Sage Cells"
+author: "Author Name"
+date: "7/6/2020"
+site: bookdown::bookdown_site
+documentclass: book
+---
+
+# Preface {-}
+
+## An example of a Bookdown project with Sage Math Cells
+
+The test content in this example is provided by [Beezer, R. (2015). A first course in linear algebra](http://linear.ups.edu/html/fcla.html) under the terms of the GNU Free Documentation License.
+
+<!--chapter:end:index.Rmd-->
+
+# Reduced Row-Echelon Form
+
+**By Robert Beezer**
+_[Here is the PreTeXt version of the same chapter](https://github.com/rbeezer/fcla/blob/master/src2/section-RREF.xml)_
+
+After solving a few systems of equations, you will recognize that it does not matter so much what we call our variables, as opposed to what numbers act as their coefficients. A system in the variables $x_1,\,x_2,\,x_3$ would behave the same if we changed the names of the variables to $a,\,b,\,c$ and kept all the constants the same and in the same places. In this section, we will isolate the key bits of information about a system of equations into something called a matrix, and then use this matrix to systematically solve the equations. Along the way we will obtain one of our most important and useful computational tools.
+
+## Matrix and Vector Notation for Systems of Equations
+
+**Definition M: Matrix** An $m\times n$ is a rectangular layout of numbers from $\complex{\null}$ having $m$ rows and $n$ columns. We will use upper-case Latin letters from the start of the alphabet $A,\,B,\,C,\dotsc$ to denote matrices and squared-off brackets to delimit the layout. Many use large parentheses instead of brackets — the distinction is not important. Rows of a matrix will be referenced starting at the top and working down (i.e. row 1 is at the top) and columns will be referenced starting from the left (i.e. column 1 is at the left). For a matrix $A$, the notation $\matrixentry{A}{ij}$ will refer to the complex number in row $i$ and column $j$ of $A$.
+
+Be careful with this notation for individual entries, since it is easy to think that $\matrixentry{A}{ij}$ refers to the _whole_ matrix. It does not. It is just a _number_, but is a convenient way to talk about the individual entries simultaneously. This notation will get a heavy workout once we get to [Chapter M](http://linear.ups.edu/html/chapter-M.html).
+
+**Example AM: A Matrix**
+
+$$\begin{equation*}
+B=\begin{bmatrix}
+-1&2&5&3\\
+1&0&-6&1\\
+-4&2&2&-2
+\end{bmatrix}
+\end{equation*}$$
+
+is a matrix with $m=3$ rows and $n=4$ columns. We can say that $\matrixentry{B}{2,3}=-6$ while $\matrixentry{B}{3,4}=-2$.
+
+**Sage M: Matrices**
+
+Matrices are fundamental objects in linear algebra and in Sage, so there are a variety of ways to construct a matrix in Sage. Generally, you need to specify what types of entries the matrix contains (more on that in a minute), the number of rows and columns, and the entries themselves. First, let us dissect an example:
+
+<div class="compute">
+  <script type="text/x-sage">
+  
+    A = matrix(QQ, 2, 3, [[1, 2, 3], [4, 5, 6]])
+    A
+  
+  </script>
+</div>
+
+<!--chapter:end:01-reduced-row-echelon-form.Rmd-->
+

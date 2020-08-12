@@ -1,0 +1,304 @@
+# Reduced Row-Echelon Form
+
+**By Robert Beezer**
+_[Here is the PreTeXt version of the same chapter](https://github.com/rbeezer/fcla/blob/master/src2/section-RREF.xml)_
+
+After solving a few systems of equations, you will recognize that it does not matter so much what we call our variables, as opposed to what numbers act as their coefficients. A system in the variables $x_1,\,x_2,\,x_3$ would behave the same if we changed the names of the variables to $a,\,b,\,c$ and kept all the constants the same and in the same places. In this section, we will isolate the key bits of information about a system of equations into something called a matrix, and then use this matrix to systematically solve the equations. Along the way we will obtain one of our most important and useful computational tools.
+
+## Matrix and Vector Notation for Systems of Equations
+
+**Definition M: Matrix** An $m\times n$ is a rectangular layout of numbers from <m>\complexes</m> having $m$ rows and $n$ columns. We will use upper-case Latin letters from the start of the alphabet $A,\,B,\,C,\dotsc$ to denote matrices and squared-off brackets to delimit the layout. Many use large parentheses instead of brackets — the distinction is not important. Rows of a matrix will be referenced starting at the top and working down (i.e. row 1 is at the top) and columns will be referenced starting from the left (i.e. column 1 is at the left). For a matrix $A$, the notation <m>\matrixentry{A}{ij}</m> will refer to the complex number in row $i$ and column $j$ of $A$.
+
+Be careful with this notation for individual entries, since it is easy to think that $\matrixentry{A}{ij}$ refers to the _whole_ matrix. It does not. It is just a _number_, but is a convenient way to talk about the individual entries simultaneously. This notation will get a heavy workout once we get to [Chapter M](http://linear.ups.edu/html/chapter-M.html).
+
+**Example AM: A Matrix**
+
+```{block2, type='example'}
+
+$$\begin{equation*}
+B=\begin{bmatrix}
+-1&2&5&3\\
+1&0&-6&1\\
+-4&2&2&-2
+\end{bmatrix}
+\end{equation*}$$
+
+is a matrix with $m=3$ rows and $n=4$ columns. We can say that $\matrixentry{B}{2,3}=-6$ while $\matrixentry{B}{3,4}=-2$.
+```
+
+**Sage M: Matrices**
+
+Matrices are fundamental objects in linear algebra and in Sage, so there are a variety of ways to construct a matrix in Sage. Generally, you need to specify what types of entries the matrix contains (more on that in a minute), the number of rows and columns, and the entries themselves. First, let us dissect an example:
+
+<div class="compute">
+<script type="text/x-sage">
+A = matrix(QQ, 2, 3, [[1, 2, 3], [4, 5, 6]])
+A
+</script>
+</div>
+
+QQ is the set of all rational numbers (fractions with an integer numerator and denominator), 2 is the number of rows, 3 is the number of columns. Sage understands a list of items as delimited by brackets ([,]) and the items in the list can again be lists themselves. So [[1, 2, 3], [4, 5, 6]] is a list of lists, and in this context the inner lists are rows of the matrix.
+
+There are various shortcuts you can employ when creating a matrix. For example, Sage is able to infer the size of the matrix from the lists of entries.
+
+<div class="compute">
+<script type="text/x-sage">
+B = matrix(QQ, [[1, 2, 3], [4, 5, 6]])
+B
+</script>
+</div>
+
+Or you can specify how many rows the matrix will have and provide one big grand list of entries, which will get chopped up, row by row, if you prefer.
+
+<div class="compute">
+<script type="text/x-sage">
+C = matrix(QQ, 2, [1, 2, 3, 4, 5, 6])
+C
+</script>
+</div>
+
+It is possible to also skip specifying the type of numbers used for entries of a matrix, however this is fraught with peril, as Sage will make an informed guess about your intent. Is this what you want? Consider when you enter the single character “2” into a computer program like Sage. Is this the integer $2$, the rational number $\frac{2}{1}$, the real number $2.00000$, the complex number $2 + 0i$, or the polynomial $p(x)=2$? In context, us humans can usually figure it out, but a literal-minded computer is not so smart. It happens that the operations we can perform, and how they behave, are influenced by the type of the entries in a matrix. So it is important to get this right and our advice is to be explicit and be in the habit of always specifying the type of the entries of a matrix you create.
+
+Mathematical objects in Sage often come from sets of similar objects. This set is called the “parent” of the element. We can use this to learn how Sage deduces the type of entries in a matrix. Execute the following three compute cells in the Sage notebook, and notice how the three matrices are constructed to have entries from the integers, the rationals and the reals.
+
+<div class="compute">
+<script type="text/x-sage">
+A = matrix(2, 3, [[1, 2, 3], [4, 5, 6]])
+A.parent()
+</script>
+</div>
+
+<div class="compute">
+<script type="text/x-sage">
+B = matrix(2, 3, [[1, 2/3, 3], [4, 5, 6]])
+B.parent()
+</script>
+</div>
+
+<div class="compute">
+<script type="text/x-sage">
+C = matrix(2, 3, [[1, sin(2.2), 3], [4, 5, 6]])
+C.parent()
+</script>
+</div>
+
+Sage knows a wide variety of sets of numbers. These are known as “rings” or “fields” (see Section F), but we will call them “number systems” here. Examples include: `ZZ` is the integers, `QQ` is the rationals, `RR` is the real numbers with reasonable precision, and `CC` is the complex numbers with reasonable precision. We will present the theory of linear algebra over the complex numbers. However, in any computer system, there will always be complications surrounding the inability of digital arithmetic to accurately represent all complex numbers. In contrast, Sage can represent rational numbers exactly as the quotient of two (perhaps very large) integers. So our Sage examples will begin by using QQ as our number system and we can concentrate on understanding the key concepts.
+
+Once we have constructed a matrix, we can learn a lot about it (such as its parent). Sage is largely object-oriented, which means many commands apply to an object by using the “dot” notation. `A.parent()` is an example of this syntax, while the constructor `matrix([[1, 2, 3], [4, 5, 6]])` is an exception. Here are a few examples, followed by some explanation:
+
+<div class="compute">
+<script type="text/x-sage">
+A = matrix(QQ, 2, 3, [[1,2,3],[4,5,6]])
+A.nrows(), A.ncols()
+</script>
+</div>
+
+<div class="compute">
+<script type="text/x-sage">
+A.base_ring()
+</script>
+</div>
+
+<div class="compute">
+<script type="text/x-sage">
+A[1,1]
+</script>
+</div>
+
+<div class="compute">
+<script type="text/x-sage">
+A[1,2]
+</script>
+</div>
+
+The number of rows and the number of columns should be apparent, `.base_ring()` gives the number system for the entries, as included in the information provided by `.parent()`.
+
+Computer scientists and computer languages prefer to begin counting from zero, while mathematicians and written mathematics prefer to begin counting at one. Sage and this text are no exception. It takes some getting used to, but the reasons for counting from zero in computer programs soon becomes very obvious. Counting from one in mathematics is historical, and unlikely to change anytime soon. So above, the two rows of A are numbered 0 and 1, while the columns are numbered 0, 1 and 2. So `A[1,2]` refers to the entry of `A` in the second row and the third column, i.e. `6`
+
+There is much more to say about how Sage works with matrices, but this is already a lot to digest. Use the space below to create some matrices (different ways) and examine them and their properties (size, entries, number system, parent).
+
+<div class="compute">
+<script type="text/x-sage">
+# Sage practice area
+</script>
+</div>
+
+When we do equation operations on system of equations, the names of the variables really are not very important. Use $x_1$, $x_2$, $x_3$, or $a$, $b$, $c$, or $x$, $y$, $z$, it really does not matter. In this subsection we will describe some notation that will make it easier to describe linear systems, solve the systems and describe the solution sets. Here is a list of definitions, laden with notation.
+
+**Definition CV: Column Vector.** A _column vector_ of _size_ $m$ is an ordered list of $m$ numbers, which is written in order vertically, starting at the top and proceeding to the bottom. At times, we will refer to a column vector as simply a _vector_. Column vectors will be written in bold, usually with lower case Latin letter from the end of the alphabet such as $\vect{u}, $\vect{v}, $\vect{w}, $\vect{x}, $\vect{y}, $\vect{z}. Some books like to write vectors with arrows, such as ⃗u. Writing by hand, some like to put arrows on top of the symbol, or a tilde underneath the symbol, as in $\underset{\sim}{\textstyle u}$. To refer to the _entry_ or _component_ of vector \vect{v} in location $i$ of the list, we write $\vectorentry{\vect{v}}{i}$.
+
+Be careful with this notation. While the symbols $\vectorentry{\vect{v}}{i}$ might look somewhat substantial, as an object this represents just one entry of a vector, which is just a single complex number.
+
+**Definition ZCV Zero Column Vector** The zero vector of size m is the column vector of size m where each entry is the number zero, 
+
+$$\begin{align*}
+\zerovector=
+\colvector{0\\0\\0\\\vdots\\0}
+\end{align*}$$
+
+or defined much more compactly, $\vectorentry{\zerovector}{i}=0$ for $1\leq i\leq m$.
+
+[**Coefficient Matrix**](#definition-cm-coefficient-matrix)
+
+For a system of linear equations, 
+
+$$\begin{align*}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&=b_3\\
+\vdots&\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
+\end{align*}$$
+
+the *coefficient matrix* is the \$m\\times n\$ matrix 
+
+$$\begin{equation*}
+A=
+\begin{bmatrix}
+a_{11}&a_{12}&a_{13}&\dots&a_{1n}\\
+a_{21}&a_{22}&a_{23}&\dots&a_{2n}\\
+a_{31}&a_{32}&a_{33}&\dots&a_{3n}\\
+\vdots&\\
+a_{m1}&a_{m2}&a_{m3}&\dots&a_{mn}\\
+\end{bmatrix}
+\end{equation*}$$
+
+[**Vector of Constants**](#definition-voc-vector-of-constants)
+
+For a system of linear equations, 
+
+$$\begin{align*}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&=b_3\\
+\vdots&\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
+\end{align*}$$
+
+
+[**Solution Vector**](#definition-solv-solution-vector)
+
+For a system of linear equations, 
+
+$$\begin{align*}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&=b_3\\
+\vdots&\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
+\end{align*}$$
+
+
+The solution vector may do double-duty on occasion. It might refer to a list of variable quantities at one point, and subsequently refer to values of those variables that actually form a particular solution to that system.
+
+[**Matrix Representation of a Linear System**](#definition-mrls-matrix-representation-of-a-linear-system). If \$A\$ is the coefficient matrix of a system of linear equations and \$\\vect{b}\$ is the vector of constants, then we will write \$\\linearsystem{A}{\\vect{b}}\$ as a shorthand expression for the system of linear equations, which we will refer to as the *matrix representation* of the linear system.
+
+
+[**Notation for systems of linear equations**](#example-nsle-notation-for-systems-of-linear-equations)
+
+```{block2, type='example'}
+The system of linear equations
+
+$$\begin{align*}
+2x_1+4x_2-3x_3+5x_4+x_5&=9\\
+3x_1+x_2+\quad\quad x_4-3x_5&=0\\
+-2x_1+7x_2-5x_3+2x_4+2x_5&=-3
+\end{align*}$$
+
+has coeffient matrix
+
+$$\begin{equation*}
+A=
+\begin{bmatrix}
+2 & 4 & -3 & 5 & 1\\
+3 & 1 & 0 & 1 & -3\\
+-2 & 7 & -5 & 2 & 2
+\end{bmatrix}
+\end{equation*}$$
+
+and vector of constants
+
+$$\begin{equation*}
+\vect{b}=\colvector{9\\0\\-3}
+\end{equation*}$$
+
+and so will be referenced as \linearsystem{A}{\vect{b}}
+```
+
+[**Augmented Matrix**](#definition-am-augmented-matrix). Suppose we have a system of \$m\$ equations in \$n\$ variables, with coefficient matrix \$A\$ and vector of constants \$\\vect{b}\$. Then the *augmented matrix* of the system of equations is the \$m\\times(n+1)\$ matrix whose first \$n\$ columns are the columns of \$A\$ and whose last column (\$n+1\$) is the column vector \$\\vect{b}\$. This matrix will be written as \$\\augmented{A}{\\vect{b}}\$.
+
+The augmented matrix *represents* all the important information in the system of equations, since the names of the variables have been ignored, and the only connection with the variables is the location of their coefficients in the matrix. It is important to realize that the augmented matrix is just that, a matrix, and *not* a system of equations. In particular, the augmented matrix does not have any “solutions,” though it will be useful for finding solutions to the system of equations that it is associated with. (Think about your objects, and review [Proof Technique L]{.knowl}.) However, notice that an augmented matrix always belongs to some system of equations, and vice versa, so it is tempting to try and blur the distinction between the two. Here is a quick example.
+
+[**Augmented matrix for Archetype A**](#example-amaa-augmented-matrix-for-archetype-a)
+
+## Row Operations
+
+An augmented matrix for a system of equations will save us the tedium of continually writing down the names of the variables as we solve the system. It will also release us from any dependence on the actual names of the variables. We have seen how certain operations we can perform on equations ([Definition EO](http://linear.ups.edu/html/section-RREF.html)) will preserve their solutions ([Theorem EOPSS](http://linear.ups.edu/html/section-RREF.html)). The next two definitions and the following theorem carry over these ideas to augmented matrices.
+
+[**Definition RO: Row Operations**](#definition-ro-row-operations). The following three operations will transform an \$m\\times n\$ matrix into a different matrix of the same size, and each is known as a *row operation*.
+
+1.  Swap the locations of two rows.
+2.  Multiply each entry of a single row by a nonzero quantity.
+3.  Multiply each entry of one row by some quantity, and add these values to the entries in the same columns of a second row. Leave the first row the same after this operation, but replace the second row by the new values.
+
+We will use a symbolic shorthand to describe these row operations:
+
+1.  \$\\rowopswap{i}{j}\$: Swap the location of rows \$i\$ and \$j\$.
+2.  \$\\rowopmult{\\alpha}{i}\$: Multiply row \$i\$ by the nonzero scalar \$\\alpha\$.
+3.  \$\\rowopadd{\\alpha}{i}{j}\$: Multiply row \$i\$ by the scalar \$\\alpha\$ and add to row \$j\$.
+
+[**Row-Equivalent Matrices**](#definition-rem-row-equivalent-matrices): Two matrices, \$A\$ and \$B\$, are *row-equivalent* if one can be obtained from the other by a sequence of row operations.
+
+[**Example TREM: Two row-equivalent matrices**](#example-TREM)
+
+```{block2, type='example'}
+
+The matrices
+
+$\begin{equation*}
+A=\begin{bmatrix}
+2&-1&3&4\\
+5&2&-2&3\\
+1&1&0&6
+\end{bmatrix}
+\end{equation*}$ $\begin{equation*}
+B=\begin{bmatrix}
+  1&1&0&6\\
+  3&0&-2&-9\\
+  2&-1&3&4
+  \end{bmatrix}
+\end{equation*}$
+  
+
+are row-equivalent as can be seen from
+
+$\begin{equation*}
+\begin{bmatrix}
+2&-1&3&4\\
+5&2&-2&3\\
+1&1&0&6
+\end{bmatrix}
+\end{equation*}$
+$\xrightarrow{\rowopswap{1}{3}}$
+$\begin{equation*}
+\begin{bmatrix}
+1&1&0&6\\
+5&2&-2&3\\
+2&-1&3&4
+\end{bmatrix}
+\end{equation*}$
+$\xrightarrow{\rowopadd{-2}{1}{2}}$
+$\begin{equation*}
+\begin{bmatrix}
+\&1&0&6\\
+3&0&-2&-9\\
+2&-1&3&4
+\end{bmatrix}
+\end{equation*}$
+
+We can also say that any pair of these three matrices are row-equivalent.
+```
+
+Notice that each of the three row operations is reversible ([Exercise RREF.T10]{}), so we do not have to be careful about the distinction between “\$A\$ is row-equivalent to \$B\$” and “\$B\$ is row-equivalent to \$A\$.” ([Exercise RREF.T11]{})
+
+The preceding definitions are designed to make the following theorem possible. It says that row-equivalent matrices represent systems of linear equations that have identical solution sets.

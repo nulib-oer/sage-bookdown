@@ -1,0 +1,3 @@
+book_filename: "sage-bookdown"
+link-citations: true
+delete_merged_file: true

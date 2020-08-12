@@ -1,0 +1,14 @@
+bookdown::gitbook:
+  css: 
+  mathjax: null
+  config:
+    toc:
+      scroll_highlight: yes 
+    toolbar:
+      position: fixed 
+    search: yes
+  includes:
+    in_header:
+      - sage-config.html
+      - mathjax-config.html
+      - style.html
