@@ -7,6 +7,7 @@ bookdown::gitbook:
     toolbar:
       position: fixed 
     search: yes
+    download: ["pdf"]
   includes:
     in_header:
       - sage-config.html
