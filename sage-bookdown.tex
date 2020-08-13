@@ -1,0 +1,521 @@
+\documentclass[openany]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdftitle={Bookdown with Sage Cells},
+            pdfauthor={Author Name},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{booktabs}
+\usepackage{amsthm}
+\usepackage{environ}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=8pt plus 2pt minus 4pt
+  \thm@postskip=\thm@preskip
+}
+\makeatother
+\NewEnviron{compute}{}{}
+
+\title{Bookdown with Sage Cells}
+\author{Author Name}
+\date{7/6/2020}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\chapter*{Preface}\label{preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+This is an example of a \href{https://bookdown.org}{Bookdown} project
+with \href{https://sagecell.sagemath.org}{SageMathCell}. Sample content
+is provided by \href{http://linear.ups.edu/html/fcla.html}{Beezer, R.
+(2015). A first course in linear algebra} under the terms of the GNU
+Free Documentation License.
+
+\begin{compute}
+\end{compute}
+
+\chapter{Reduced Row-Echelon Form}\label{reduced-row-echelon-form}
+
+\textbf{By Robert Beezer}
+\emph{\href{https://github.com/rbeezer/fcla/blob/master/src2/section-RREF.xml}{Here
+is the PreTeXt version of the same chapter}}
+
+After solving a few systems of equations, you will recognize that it
+does not matter so much what we call our variables, as opposed to what
+numbers act as their coefficients. A system in the variables
+\(x_1,\,x_2,\,x_3\) would behave the same if we changed the names of the
+variables to \(a,\,b,\,c\) and kept all the constants the same and in
+the same places. In this section, we will isolate the key bits of
+information about a system of equations into something called a matrix,
+and then use this matrix to systematically solve the equations. Along
+the way we will obtain one of our most important and useful
+computational tools.
+
+\section{Matrix and Vector Notation for Systems of
+Equations}\label{matrix-and-vector-notation-for-systems-of-equations}
+
+\textbf{Definition M: Matrix} An \(m\times n\) is a rectangular layout
+of numbers from \(complexes\) having \(m\) rows and \(n\) columns. We
+will use upper-case Latin letters from the start of the alphabet
+\(A,\,B,\,C,\dotsc\) to denote matrices and squared-off brackets to
+delimit the layout. Many use large parentheses instead of brackets ---
+the distinction is not important. Rows of a matrix will be referenced
+starting at the top and working down (i.e.~row 1 is at the top) and
+columns will be referenced starting from the left (i.e.~column 1 is at
+the left). For a matrix \([A]\), the notation \([{A}{ij}]\) will refer
+to the complex number in row \(i\) and column \(j\) of \(A\).
+
+Be careful with this notation for individual entries, since it is easy
+to think that \([{A}{ij}]\) refers to the \emph{whole} matrix. It does
+not. It is just a \emph{number}, but is a convenient way to talk about
+the individual entries simultaneously. This notation will get a heavy
+workout once we get to
+\href{http://linear.ups.edu/html/chapter-M.html}{Chapter M}.
+
+\textbf{Example AM: A Matrix}
+
+\[B=\begin{bmatrix}
+-1&2&5&3\\
+1&0&-6&1\\
+-4&2&2&-2
+\end{bmatrix}\]
+
+is a matrix with \(m=3\) rows and \(n=4\) columns. We can say that
+\([{B}{2,3}=-6]\) while \([{B}{3,4}=-2]\).
+
+\textbf{Sage M: Matrices}
+
+Matrices are fundamental objects in linear algebra and in Sage, so there
+are a variety of ways to construct a matrix in Sage. Generally, you need
+to specify what types of entries the matrix contains (more on that in a
+minute), the number of rows and columns, and the entries themselves.
+First, let us dissect an example:
+
+\begin{compute}
+\end{compute}
+
+QQ is the set of all rational numbers (fractions with an integer
+numerator and denominator), 2 is the number of rows, 3 is the number of
+columns. Sage understands a list of items as delimited by brackets
+({[},{]}) and the items in the list can again be lists themselves. So
+{[}{[}1, 2, 3{]}, {[}4, 5, 6{]}{]} is a list of lists, and in this
+context the inner lists are rows of the matrix.
+
+There are various shortcuts you can employ when creating a matrix. For
+example, Sage is able to infer the size of the matrix from the lists of
+entries.
+
+\begin{compute}
+\end{compute}
+
+Or you can specify how many rows the matrix will have and provide one
+big grand list of entries, which will get chopped up, row by row, if you
+prefer.
+
+\begin{compute}
+\end{compute}
+
+It is possible to also skip specifying the type of numbers used for
+entries of a matrix, however this is fraught with peril, as Sage will
+make an informed guess about your intent. Is this what you want?
+Consider when you enter the single character ``2'' into a computer
+program like Sage. Is this the integer \(2\), the rational number
+\(\frac{2}{1}\), the real number \(2.00000\), the complex number
+\(2 + 0i\), or the polynomial \(p(x)=2\)? In context, us humans can
+usually figure it out, but a literal-minded computer is not so smart. It
+happens that the operations we can perform, and how they behave, are
+influenced by the type of the entries in a matrix. So it is important to
+get this right and our advice is to be explicit and be in the habit of
+always specifying the type of the entries of a matrix you create.
+
+Mathematical objects in Sage often come from sets of similar objects.
+This set is called the ``parent'' of the element. We can use this to
+learn how Sage deduces the type of entries in a matrix. Execute the
+following three compute cells in the Sage notebook, and notice how the
+three matrices are constructed to have entries from the integers, the
+rationals and the reals.
+
+\begin{compute}
+\end{compute}
+
+\begin{compute}
+\end{compute}
+
+\begin{compute}
+\end{compute}
+
+Sage knows a wide variety of sets of numbers. These are known as
+``rings'' or ``fields'' (see Section F), but we will call them ``number
+systems'' here. Examples include: \texttt{ZZ} is the integers,
+\texttt{QQ} is the rationals, \texttt{RR} is the real numbers with
+reasonable precision, and \texttt{CC} is the complex numbers with
+reasonable precision. We will present the theory of linear algebra over
+the complex numbers. However, in any computer system, there will always
+be complications surrounding the inability of digital arithmetic to
+accurately represent all complex numbers. In contrast, Sage can
+represent rational numbers exactly as the quotient of two (perhaps very
+large) integers. So our Sage examples will begin by using QQ as our
+number system and we can concentrate on understanding the key concepts.
+
+Once we have constructed a matrix, we can learn a lot about it (such as
+its parent). Sage is largely object-oriented, which means many commands
+apply to an object by using the ``dot'' notation. \texttt{A.parent()} is
+an example of this syntax, while the constructor
+\texttt{matrix({[}{[}1,\ 2,\ 3{]},\ {[}4,\ 5,\ 6{]}{]})} is an
+exception. Here are a few examples, followed by some explanation:
+
+\begin{compute}
+\end{compute}
+
+\begin{compute}
+\end{compute}
+
+\begin{compute}
+\end{compute}
+
+\begin{compute}
+\end{compute}
+
+The number of rows and the number of columns should be apparent,
+\texttt{.base\_ring()} gives the number system for the entries, as
+included in the information provided by \texttt{.parent()}.
+
+Computer scientists and computer languages prefer to begin counting from
+zero, while mathematicians and written mathematics prefer to begin
+counting at one. Sage and this text are no exception. It takes some
+getting used to, but the reasons for counting from zero in computer
+programs soon becomes very obvious. Counting from one in mathematics is
+historical, and unlikely to change anytime soon. So above, the two rows
+of A are numbered 0 and 1, while the columns are numbered 0, 1 and 2. So
+\texttt{A{[}1,2{]}} refers to the entry of \texttt{A} in the second row
+and the third column, i.e. \texttt{6}
+
+There is much more to say about how Sage works with matrices, but this
+is already a lot to digest. Use the space below to create some matrices
+(different ways) and examine them and their properties (size, entries,
+number system, parent).
+
+\begin{compute}
+\end{compute}
+
+When we do equation operations on system of equations, the names of the
+variables really are not very important. Use \(x_1\), \(x_2\), \(x_3\),
+or \(a\), \(b\), \(c\), or \(x\), \(y\), \(z\), it really does not
+matter. In this subsection we will describe some notation that will make
+it easier to describe linear systems, solve the systems and describe the
+solution sets. Here is a list of definitions, laden with notation.
+
+\textbf{Definition CV: Column Vector.} A \emph{column vector} of
+\emph{size} \(m\) is an ordered list of \(m\) numbers, which is written
+in order vertically, starting at the top and proceeding to the bottom.
+At times, we will refer to a column vector as simply a \emph{vector}.
+Column vectors will be written in bold, usually with lower case Latin
+letter from the end of the alphabet such as \$\{u\}, \$\{v\}, \$\{w\},
+\$\{x\}, \({y}\), \({z}\). Some books like to write vectors with arrows,
+such as \({u}\). Writing by hand, some like to put arrows on top of the
+symbol, or a tilde underneath the symbol, as in
+\(\underset{\sim}{\textstyle u}\). To refer to the \emph{entry} or
+\emph{component} of vector \({v}\) in location \(i\) of the list, we
+write \([{v}]_{i}\).
+
+Be careful with this notation. While the symbols \({v}_{i}\) might look
+somewhat substantial, as an object this represents just one entry of a
+vector, which is just a single complex number.
+
+\textbf{Definition ZCV Zero Column Vector} The zero vector of size m is
+the column vector of size m where each entry is the number zero,
+
+\[
+0 = \begin{bmatrix}
+     0 \\
+     0 \\
+     0 \\
+     \vdots \\
+     0 \\
+     \end{bmatrix}
+\]
+
+or defined much more compactly, \([0]_{i}\) for \(1\leq i\leq m\).
+
+\protect\hyperlink{definition-cm-coefficient-matrix}{\textbf{Coefficient
+Matrix}}
+
+For a system of linear equations,
+
+\begin{align*}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&=b_3\\
+\vdots&\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
+\end{align*}
+
+the \emph{coefficient matrix} is the \$m\textbackslash{}times n\$ matrix
+
+\[
+A=
+\begin{bmatrix}
+a_{11}&a_{12}&a_{13}&\dots&a_{1n}\\
+a_{21}&a_{22}&a_{23}&\dots&a_{2n}\\
+a_{31}&a_{32}&a_{33}&\dots&a_{3n}\\
+\vdots&\\
+a_{m1}&a_{m2}&a_{m3}&\dots&a_{mn}\\
+\end{bmatrix}
+\]
+
+\protect\hyperlink{definition-voc-vector-of-constants}{\textbf{Vector of
+Constants}}
+
+For a system of linear equations,
+
+\[\begin{aligned}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&=b_3\\
+\vdots&\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
+\end{aligned}\]
+
+\protect\hyperlink{definition-solv-solution-vector}{\textbf{Solution
+Vector}}
+
+For a system of linear equations,
+
+\[\begin{aligned}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&=b_3\\
+\vdots&\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
+\end{aligned}\]
+
+The solution vector may do double-duty on occasion. It might refer to a
+list of variable quantities at one point, and subsequently refer to
+values of those variables that actually form a particular solution to
+that system.
+
+\protect\hyperlink{definition-mrls-matrix-representation-of-a-linear-system}{\textbf{Matrix
+Representation of a Linear System}}. If \$A\$ is the coefficient matrix
+of a system of linear equations and \({b}\) is the vector of constants,
+then we will write \(\$\mathcal L \mathcal S({A}, b)\) as a shorthand
+expression for the system of linear equations, which we will refer to as
+the \emph{matrix representation} of the linear system.
+
+\protect\hyperlink{example-nsle-notation-for-systems-of-linear-equations}{\textbf{Notation
+for systems of linear equations}}
+
+The system of linear equations
+
+\[\begin{aligned}
+2x_1+4x_2-3x_3+5x_4+x_5&=9\\
+3x_1+x_2+\quad\quad x_4-3x_5&=0\\
+-2x_1+7x_2-5x_3+2x_4+2x_5&=-3
+\end{aligned}\]
+
+has coeffient matrix
+
+\[
+A=
+\begin{bmatrix}
+2 & 4 & -3 & 5 & 1\\
+3 & 1 & 0 & 1 & -3\\
+-2 & 7 & -5 & 2 & 2
+\end{bmatrix}
+\]
+
+and vector of constants
+
+\[
+{b}=\begin{bmatrix}
+9\\
+0\\
+-3
+\end{bmatrix}
+\]
+
+and so will be referenced as \(\$\mathcal L \mathcal S({A}, b)\)
+
+\protect\hyperlink{definition-am-augmented-matrix}{\textbf{Augmented
+Matrix}}. Suppose we have a system of \$m\$ equations in \$n\$
+variables, with coefficient matrix \$A\$ and vector of constants
+\$\textbackslash{}vect\{b\}\$. Then the \emph{augmented matrix} of the
+system of equations is the \$m\textbackslash{}times(n+1)\$ matrix whose
+first \$n\$ columns are the columns of \$A\$ and whose last column
+(\$n+1\$) is the column vector \$\textbackslash{}vect\{b\}\$. This
+matrix will be written as
+\$\textbackslash{}augmented\{A\}\{\textbackslash{}vect\{b\}\}\$.
+
+The augmented matrix \emph{represents} all the important information in
+the system of equations, since the names of the variables have been
+ignored, and the only connection with the variables is the location of
+their coefficients in the matrix. It is important to realize that the
+augmented matrix is just that, a matrix, and \emph{not} a system of
+equations. In particular, the augmented matrix does not have any
+``solutions,'' though it will be useful for finding solutions to the
+system of equations that it is associated with. (Think about your
+objects, and review {Proof Technique L}.) However, notice that an
+augmented matrix always belongs to some system of equations, and vice
+versa, so it is tempting to try and blur the distinction between the
+two. Here is a quick example.
+
+\protect\hyperlink{example-amaa-augmented-matrix-for-archetype-a}{\textbf{Augmented
+matrix for Archetype A}}
+
+\section{Row Operations}\label{row-operations}
+
+An augmented matrix for a system of equations will save us the tedium of
+continually writing down the names of the variables as we solve the
+system. It will also release us from any dependence on the actual names
+of the variables. We have seen how certain operations we can perform on
+equations
+(\href{http://linear.ups.edu/html/section-RREF.html}{Definition EO})
+will preserve their solutions
+(\href{http://linear.ups.edu/html/section-RREF.html}{Theorem EOPSS}).
+The next two definitions and the following theorem carry over these
+ideas to augmented matrices.
+
+\protect\hyperlink{definition-ro-row-operations}{\textbf{Definition RO:
+Row Operations}}. The following three operations will transform an
+\$m\textbackslash{}times n\$ matrix into a different matrix of the same
+size, and each is known as a \emph{row operation}.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Swap the locations of two rows.
+\item
+  Multiply each entry of a single row by a nonzero quantity.
+\item
+  Multiply each entry of one row by some quantity, and add these values
+  to the entries in the same columns of a second row. Leave the first
+  row the same after this operation, but replace the second row by the
+  new values.
+\end{enumerate}
+
+We will use a symbolic shorthand to describe these row operations:
+
+\({-2}R_{1} \rightarrow R_{2}\)
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(R_{i} \leftrightarrow R_{j}\): Swap the location of rows \$i\$ and
+  \$j\$.
+\item
+  \(\alpha R_{i}\): Multiply row \(i\) by the nonzero scalar \(\alpha\).
+\item
+  \(\alpha R_{i} + R_{j}\): Multiply row \$i\$ by the scalar
+  \$\textbackslash{}alpha\$ and add to row \$j\$.
+\end{enumerate}
+
+\protect\hyperlink{definition-rem-row-equivalent-matrices}{\textbf{Row-Equivalent
+Matrices}}: Two matrices, \$A\$ and \$B\$, are \emph{row-equivalent} if
+one can be obtained from the other by a sequence of row operations.
+
+\protect\hyperlink{example-TREM}{\textbf{Example TREM: Two
+row-equivalent matrices}}
+
+The matrices
+
+\(A=\begin{bmatrix} 2&-1&3&4\\ 5&2&-2&3\\ 1&1&0&6 \end{bmatrix}\)
+\(B=\begin{bmatrix}  1&1&0&6\\  3&0&-2&-9\\  2&-1&3&4  \end{bmatrix}\)
+
+are row-equivalent as can be seen from
+
+\[\begin{bmatrix}
+2&-1&3&4\\
+5&2&-2&3\\
+1&1&0&6
+\end{bmatrix}\] \[R_{1} \rightarrow R_{3}\] \[\begin{bmatrix}
+1&1&0&6\\
+5&2&-2&3\\
+2&-1&3&4
+\end{bmatrix}\] \[{-2}R_{1} \rightarrow R_{2}\] \[\begin{bmatrix}
+\&1&0&6\\
+3&0&-2&-9\\
+2&-1&3&4
+\end{bmatrix}\]
+
+We can also say that any pair of these three matrices are
+row-equivalent.
+
+Notice that each of the three row operations is reversible ({Exercise
+RREF.T10}), so we do not have to be careful about the distinction
+between ``\$A\$ is row-equivalent to \$B\$'' and ``\$B\$ is
+row-equivalent to \$A\$.'' ({Exercise RREF.T11})
+
+The preceding definitions are designed to make the following theorem
+possible. It says that row-equivalent matrices represent systems of
+linear equations that have identical solution sets.
+
+\end{document}

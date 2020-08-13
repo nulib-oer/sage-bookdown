@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 Reduced Row-Echelon Form | Bookdown with Sage Cells</title>
+  <meta name="description" content="1 Reduced Row-Echelon Form | Bookdown with Sage Cells" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 Reduced Row-Echelon Form | Bookdown with Sage Cells" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 Reduced Row-Echelon Form | Bookdown with Sage Cells" />
+  
+  
+  
+
+<meta name="author" content="Author Name" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
+<script>
+sagecell.makeSagecell({inputLocation: 'div.compute', evalButtonText: 'Evaluate'});
+</script>
+<link rel="stylesheet" type="text/css" href="https://sagecell.sagemath.org/static/sagecell_embed.css">
+<script type="text/x-mathjax-config">
+
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js",
+               "TeX/AMSmath.js",
+               "TeX/AMSsymbols.js",
+               "http://aimath.org/mathbook/mathjaxknowl.js",
+               ],
+  tex2jax: {
+    inlineMath: [['$','$'],["\\(","\\)"]],
+    processEscapes: true,
+  },
+TeX: {
+   Macros: {
+denote: ["",4],
+null: "",
+sb: "_",
+leading: ["\\fbox{#1}",1],
+rref: "\\xrightarrow{\\text{RREF}}",
+rowopswap: ["R_{#1} \\leftrightarrow R_{#2}",2],
+rowopmult: ["#1 R_{#2}",2],
+rowopadd: ["#1 R_{#2} + R_{#3}",3],
+compose: ["#1 \\circ #2",2],
+inverse: ["#1^{-1}",1],
+setcomplement: ["\\overline{#1}",1],
+ltinverse: ["#1^{-1}",1],
+preimage: ["#1^{-1}\\left(#2\\right)",2],
+lt: ["#1\\left(#2\\right)",2],
+transpose: ["#1^{t}",1],
+adjoint: ["#1^{\\ast}",1],
+adj: ["\\transpose{\\left(\\conjugate{#1}\\right)}",1],
+similar: ["\\inverse{#2}#1#2",2],
+detname: ["\\det\\left(#1\\right)",1],
+dimension: ["\\dim\\left(#1\\right)",1],
+colvector: ["\\begin{bmatrix}#1\\end{bmatrix}",1],
+vslt: ["{\\mathcal LT}\\left(#1,#2\\right)",2],
+lns: ["{\\mathcal L}\\left(#1\\right)",1],
+nsp: ["{\\mathcal N}\\left(#1\\right)",1],
+csp: ["{\\mathcal C}\\left(#1\\right)",1],
+rsp: ["{\\mathcal R}\\left(#1\\right)",1],
+rng: ["{\\mathcal R}\\left(#1\\right)",1],
+krn: ["{\\mathcal K}\\left(#1\\right)",1],
+vectrepname: ["\\rho_{#1}",1],
+vectrep: ["\\lt{\\vectrepname{#1}}{#2}",2],
+vectrepinvname: ["\\ltinverse{\\vectrepname{#1}}",1],
+vectrepinv: ["\\lt{\\ltinverse{\\vectrepname{#1}}}{#2}",2],
+matrixrepcolumns: ["\\left\\lbrack \\left.\\vectrep{#2}{\\lt{#1}{\\vect{#3}\\sb{1}}}\\right| \\left.\\vectrep{#2}{\\lt{#1}{\\vect{#3}\\sb{2}}}\\right| \\left.\\vectrep{#2}{\\lt{#1}{\\vect{#3}\\sb{3}}}\\right| \\ldots \\left|\\vectrep{#2}{\\lt{#1}{\\vect{#3}\\sb{#4}}}\\right.  \\right\\rbrack",4],
+matrixrep: ["M^{#1}_{#2,#3}",3],
+cbm: ["C_{#1,#2}",2],
+jordan: ["J_{#1}\\left(#2\\right)",2],
+restrict: ["{#1}|\\sb{#2}",2],
+indx: ["\\iota_{#1}|\\left(#2\\right)",2],
+rank: ["r\\left(#1\\right)",1],
+nullity: ["n\\left(#1\\right)",1],
+eigenspace: ["{\\mathcal E}_{#1}\\left(#2\\right)",2],
+eigensystem: ["\\lambda&=#2&\\eigenspace{#1}{#2}&=\\spn{\\set{#3}}",3],
+geneigenspace: ["{\\mathcal G}_{#1}\\left(#2\\right)",2],
+innerproduct: ["\\FCLAlangle#1,#2\\FCLArangle",2],
+spn: ["\\FCLAlangle#1\\FCLArangle",1],
+card: ["\\FCLAlvert#1\\FCLArvert",1],
+detbars: ["\\FCLAlvert#1\\FCLArvert",1],
+modulus: ["\\FCLAlvert#1\\FCLArvert",1],
+norm: ["\\FCLAlVert#1\\FCLArVert",1],
+matrixentry: ["\\FCLAlbrack#1\\FCLArbrack_{#2}",2],
+vectorentry: ["\\FCLAlbrack#1\\FCLArbrack_{#2}",2],
+matrixcolumns: ["\\left\\lbrack\\vect{#1}_{1}|\\vect{#1}_{2}|\\vect{#1}_{3}|\\ldots|\\vect{#1}_{#2}\\right\\rbrack",2],
+vectorlist: ["\\vect{#1}_{1}, \\vect{#1}_{2}, \\vect{#1}_{3}, \\ldots, \\vect{#1}_{#2}",2],
+scalarlist: ["{#1}_{1}, {#1}_{2}, {#1}_{3}, \\ldots, {#1}_{#2}",2],
+set: ["\\FCLAlsetbrack#1\\FCLArsetbrack",1],
+setparts: ["\\FCLAlsetbrack\\FCLAlnull #1 \\FCLArvert #2 \\FCLArsetbrack",2],
+algmult: ["\\alpha_{#1}\\left(#2\\right)",2],
+geomult: ["\\gamma_{#1}\\left(#2\\right)",2],
+charpoly: ["p_{#1}\\left(#2\\right)",2],
+augmented: ["\\FCLAlbrack\\FCLAlnull#1\\FCLArvert#2\\FCLArbrack",2],
+linearsystem: ["{\\mathcal L}{\\mathcal S}\\left(#1,#2\\right)",2],
+homosystem: ["\\linearsystem{#1}{\\zerovector}",1],
+lincombo: ["#1_{1}\\vect{#2}_{1}+#1_{2}\\vect{#2}_{2}+#1_{3}\\vect{#2}_{3}+\\cdots +#1_{#3}\\vect{#2}_{#3}",3],
+submatrix: ["#1\\left(#2|#3\\right)",3],
+elemswap: ["E_{#1,#2}",2],
+elemmult: ["E_{#2}\\left(#1\\right)",2],
+elemadd: ["E_{#2,#3}\\left(#1\\right)",3],
+ltdefn: ["#1 : #2 \\rightarrow #3",3],
+zerovector: "\\vect{0}",
+zeromatrix: "{\\mathcal 0}",
+vect: ["{\\bf #1}",1],
+conjugate: ["\\overline{#1}",1],
+ds: "\\oplus",
+isomorphic: "\\cong",
+complexes: "{\\mathbb C}",
+complex: ["{\\mathbb C}^{#1}",1],
+real: ["{\\mathbb R}^{#1}",1],
+FCLAlangle: "\\left\\langle",
+FCLArangle: "\\right\\rangle",
+FCLAlbrack: "\\left\\lbrack",
+FCLArbrack: "\\right\\rbrack",
+FCLAlvert: "\\left\\lvert",
+FCLArvert: "\\right\\rvert",
+FCLAlVert: "\\left\\lVert",
+FCLArVert: "\\right\\rVert",
+FCLAlnull: "\\left.",
+FCLArnull: "\\right.",
+FCLAlsetbrack: "\\left\\{",
+FCLArsetbrack: "\\right\\}",
+intertext: ["\\\\ \\text{#1}\\\\ ",1],
+}
+},
+  CommonHTML: { scale: 85 },
+  menuSettings: { zscale: "150%", zoom: "Double-Click" }
+});
+
+</script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_CHTML-full"></script>
+<style type="text/css">
+.example {
+  background: #f7f7f7;
+  border-radius: 6px;
+  padding: 1em;
+}
+.book .book-body .page-wrapper .page-inner section.normal .compute pre {
+  background: #fff;
+  margin: 0;
+  padding: 0 1em;
+  font-weight: bold;
+  color: #87878c;
+}
+.book .book-body .page-wrapper .page-inner section.normal a {
+  color: #4e2a84;
+  font-weight:bold;
+}
+
+.book .book-summary ul.summary li a:hover, .book .book-summary ul.summary li.active > a {
+  color: #4e2a84;
+  font-weight:bold;
+}
+</style>
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="reduced-row-echelon-form.html"><a href="reduced-row-echelon-form.html"><i class="fa fa-check"></i><b>1</b> Reduced Row-Echelon Form</a><ul>
+<li class="chapter" data-level="1.1" data-path="reduced-row-echelon-form.html"><a href="reduced-row-echelon-form.html#matrix-and-vector-notation-for-systems-of-equations"><i class="fa fa-check"></i><b>1.1</b> Matrix and Vector Notation for Systems of Equations</a></li>
+<li class="chapter" data-level="1.2" data-path="reduced-row-echelon-form.html"><a href="reduced-row-echelon-form.html#row-operations"><i class="fa fa-check"></i><b>1.2</b> Row Operations</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bookdown with Sage Cells</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="reduced-row-echelon-form" class="section level1">
+<h1><span class="header-section-number">1</span> Reduced Row-Echelon Form</h1>
+<p><strong>By Robert Beezer</strong> <em><a href="https://github.com/rbeezer/fcla/blob/master/src2/section-RREF.xml">Here is the PreTeXt version of the same chapter</a></em></p>
+<p>After solving a few systems of equations, you will recognize that it does not matter so much what we call our variables, as opposed to what numbers act as their coefficients. A system in the variables <span class="math inline"><em>x</em><sub>1</sub>,  <em>x</em><sub>2</sub>,  <em>x</em><sub>3</sub></span> would behave the same if we changed the names of the variables to <span class="math inline"><em>a</em>,  <em>b</em>,  <em>c</em></span> and kept all the constants the same and in the same places. In this section, we will isolate the key bits of information about a system of equations into something called a matrix, and then use this matrix to systematically solve the equations. Along the way we will obtain one of our most important and useful computational tools.</p>
+<div id="matrix-and-vector-notation-for-systems-of-equations" class="section level2">
+<h2><span class="header-section-number">1.1</span> Matrix and Vector Notation for Systems of Equations</h2>
+<p><strong>Definition M: Matrix</strong> An <span class="math inline"><em>m</em> × <em>n</em></span> is a rectangular layout of numbers from <span class="math inline"><em>c</em><em>o</em><em>m</em><em>p</em><em>l</em><em>e</em><em>x</em><em>e</em><em>s</em></span> having <span class="math inline"><em>m</em></span> rows and <span class="math inline"><em>n</em></span> columns. We will use upper-case Latin letters from the start of the alphabet <span class="math inline">$A,\,B,\,C,\dotsc$</span> to denote matrices and squared-off brackets to delimit the layout. Many use large parentheses instead of brackets — the distinction is not important. Rows of a matrix will be referenced starting at the top and working down (i.e. row 1 is at the top) and columns will be referenced starting from the left (i.e. column 1 is at the left). For a matrix <span class="math inline">[<em>A</em>]</span>, the notation <span class="math inline">[<em>A</em><em>i</em><em>j</em>]</span> will refer to the complex number in row <span class="math inline"><em>i</em></span> and column <span class="math inline"><em>j</em></span> of <span class="math inline"><em>A</em></span>.</p>
+<p>Be careful with this notation for individual entries, since it is easy to think that <span class="math inline">[<em>A</em><em>i</em><em>j</em>]</span> refers to the <em>whole</em> matrix. It does not. It is just a <em>number</em>, but is a convenient way to talk about the individual entries simultaneously. This notation will get a heavy workout once we get to <a href="http://linear.ups.edu/html/chapter-M.html">Chapter M</a>.</p>
+<p><strong>Example AM: A Matrix</strong></p>
+<p><br /><span class="math display">$$B=\begin{bmatrix}
+-1&amp;2&amp;5&amp;3\\
+1&amp;0&amp;-6&amp;1\\
+-4&amp;2&amp;2&amp;-2
+\end{bmatrix}$$</span><br /></p>
+<p>is a matrix with <span class="math inline"><em>m</em> = 3</span> rows and <span class="math inline"><em>n</em> = 4</span> columns. We can say that <span class="math inline">[<em>B</em>2, 3 = −6]</span> while <span class="math inline">[<em>B</em>3, 4 = −2]</span>.</p>
+<p><strong>Sage M: Matrices</strong></p>
+<p>Matrices are fundamental objects in linear algebra and in Sage, so there are a variety of ways to construct a matrix in Sage. Generally, you need to specify what types of entries the matrix contains (more on that in a minute), the number of rows and columns, and the entries themselves. First, let us dissect an example:</p>
+
+<div class="compute">
+<script type="text/x-sage">
+A = matrix(QQ, 2, 3, [[1, 2, 3], [4, 5, 6]])
+A
+</script>
+</div>
+
+<p>QQ is the set of all rational numbers (fractions with an integer numerator and denominator), 2 is the number of rows, 3 is the number of columns. Sage understands a list of items as delimited by brackets ([,]) and the items in the list can again be lists themselves. So [[1, 2, 3], [4, 5, 6]] is a list of lists, and in this context the inner lists are rows of the matrix.</p>
+<p>There are various shortcuts you can employ when creating a matrix. For example, Sage is able to infer the size of the matrix from the lists of entries.</p>
+
+<div class="compute">
+<script type="text/x-sage">
+B = matrix(QQ, [[1, 2, 3], [4, 5, 6]])
+B
+</script>
+</div>
+
+<p>Or you can specify how many rows the matrix will have and provide one big grand list of entries, which will get chopped up, row by row, if you prefer.</p>
+
+<div class="compute">
+<script type="text/x-sage">
+C = matrix(QQ, 2, [1, 2, 3, 4, 5, 6])
+C
+</script>
+</div>
+
+<p>It is possible to also skip specifying the type of numbers used for entries of a matrix, however this is fraught with peril, as Sage will make an informed guess about your intent. Is this what you want? Consider when you enter the single character “2” into a computer program like Sage. Is this the integer <span class="math inline">2</span>, the rational number <span class="math inline">$\frac{2}{1}$</span>, the real number <span class="math inline">2.00000</span>, the complex number <span class="math inline">2 + 0<em>i</em></span>, or the polynomial <span class="math inline"><em>p</em>(<em>x</em>)=2</span>? In context, us humans can usually figure it out, but a literal-minded computer is not so smart. It happens that the operations we can perform, and how they behave, are influenced by the type of the entries in a matrix. So it is important to get this right and our advice is to be explicit and be in the habit of always specifying the type of the entries of a matrix you create.</p>
+<p>Mathematical objects in Sage often come from sets of similar objects. This set is called the “parent” of the element. We can use this to learn how Sage deduces the type of entries in a matrix. Execute the following three compute cells in the Sage notebook, and notice how the three matrices are constructed to have entries from the integers, the rationals and the reals.</p>
+
+<div class="compute">
+<script type="text/x-sage">
+A = matrix(2, 3, [[1, 2, 3], [4, 5, 6]])
+A.parent()
+</script>
+</div>
+
+
+<div class="compute">
+<script type="text/x-sage">
+B = matrix(2, 3, [[1, 2/3, 3], [4, 5, 6]])
+B.parent()
+</script>
+</div>
+
+
+<div class="compute">
+<script type="text/x-sage">
+C = matrix(2, 3, [[1, sin(2.2), 3], [4, 5, 6]])
+C.parent()
+</script>
+</div>
+
+<p>Sage knows a wide variety of sets of numbers. These are known as “rings” or “fields” (see Section F), but we will call them “number systems” here. Examples include: <code>ZZ</code> is the integers, <code>QQ</code> is the rationals, <code>RR</code> is the real numbers with reasonable precision, and <code>CC</code> is the complex numbers with reasonable precision. We will present the theory of linear algebra over the complex numbers. However, in any computer system, there will always be complications surrounding the inability of digital arithmetic to accurately represent all complex numbers. In contrast, Sage can represent rational numbers exactly as the quotient of two (perhaps very large) integers. So our Sage examples will begin by using QQ as our number system and we can concentrate on understanding the key concepts.</p>
+<p>Once we have constructed a matrix, we can learn a lot about it (such as its parent). Sage is largely object-oriented, which means many commands apply to an object by using the “dot” notation. <code>A.parent()</code> is an example of this syntax, while the constructor <code>matrix([[1, 2, 3], [4, 5, 6]])</code> is an exception. Here are a few examples, followed by some explanation:</p>
+
+<div class="compute">
+<script type="text/x-sage">
+A = matrix(QQ, 2, 3, [[1,2,3],[4,5,6]])
+A.nrows(), A.ncols()
+</script>
+</div>
+
+
+<div class="compute">
+<script type="text/x-sage">
+A.base_ring()
+</script>
+</div>
+
+
+<div class="compute">
+<script type="text/x-sage">
+A[1,1]
+</script>
+</div>
+
+
+<div class="compute">
+<script type="text/x-sage">
+A[1,2]
+</script>
+</div>
+
+<p>The number of rows and the number of columns should be apparent, <code>.base_ring()</code> gives the number system for the entries, as included in the information provided by <code>.parent()</code>.</p>
+<p>Computer scientists and computer languages prefer to begin counting from zero, while mathematicians and written mathematics prefer to begin counting at one. Sage and this text are no exception. It takes some getting used to, but the reasons for counting from zero in computer programs soon becomes very obvious. Counting from one in mathematics is historical, and unlikely to change anytime soon. So above, the two rows of A are numbered 0 and 1, while the columns are numbered 0, 1 and 2. So <code>A[1,2]</code> refers to the entry of <code>A</code> in the second row and the third column, i.e. <code>6</code></p>
+<p>There is much more to say about how Sage works with matrices, but this is already a lot to digest. Use the space below to create some matrices (different ways) and examine them and their properties (size, entries, number system, parent).</p>
+
+<div class="compute">
+<script type="text/x-sage">
+# Sage practice area
+</script>
+</div>
+
+<p>When we do equation operations on system of equations, the names of the variables really are not very important. Use <span class="math inline"><em>x</em><sub>1</sub></span>, <span class="math inline"><em>x</em><sub>2</sub></span>, <span class="math inline"><em>x</em><sub>3</sub></span>, or <span class="math inline"><em>a</em></span>, <span class="math inline"><em>b</em></span>, <span class="math inline"><em>c</em></span>, or <span class="math inline"><em>x</em></span>, <span class="math inline"><em>y</em></span>, <span class="math inline"><em>z</em></span>, it really does not matter. In this subsection we will describe some notation that will make it easier to describe linear systems, solve the systems and describe the solution sets. Here is a list of definitions, laden with notation.</p>
+<p><strong>Definition CV: Column Vector.</strong> A <em>column vector</em> of <em>size</em> <span class="math inline"><em>m</em></span> is an ordered list of <span class="math inline"><em>m</em></span> numbers, which is written in order vertically, starting at the top and proceeding to the bottom. At times, we will refer to a column vector as simply a <em>vector</em>. Column vectors will be written in bold, usually with lower case Latin letter from the end of the alphabet such as ${u}, ${v}, ${w}, ${x}, <span class="math inline"><em>y</em></span>, <span class="math inline"><em>z</em></span>. Some books like to write vectors with arrows, such as <span class="math inline"><em>u</em></span>. Writing by hand, some like to put arrows on top of the symbol, or a tilde underneath the symbol, as in <span class="math inline">$\underset{\sim}{\textstyle u}$</span>. To refer to the <em>entry</em> or <em>component</em> of vector <span class="math inline"><em>v</em></span> in location <span class="math inline"><em>i</em></span> of the list, we write <span class="math inline">[<em>v</em>]<sub><em>i</em></sub></span>.</p>
+<p>Be careful with this notation. While the symbols <span class="math inline"><em>v</em><sub><em>i</em></sub></span> might look somewhat substantial, as an object this represents just one entry of a vector, which is just a single complex number.</p>
+<p><strong>Definition ZCV Zero Column Vector</strong> The zero vector of size m is the column vector of size m where each entry is the number zero,</p>
+<p><br /><span class="math display">$$
+0 = \begin{bmatrix}
+     0 \\
+     0 \\
+     0 \\
+     \vdots \\
+     0 \\
+     \end{bmatrix}
+$$</span><br /></p>
+<p>or defined much more compactly, <span class="math inline">[0]<sub><em>i</em></sub></span> for <span class="math inline">1 ≤ <em>i</em> ≤ <em>m</em></span>.</p>
+<p><a href="#definition-cm-coefficient-matrix"><strong>Coefficient Matrix</strong></a></p>
+<p>For a system of linear equations,</p>
+
+<p>the <em>coefficient matrix</em> is the $m\times n$ matrix</p>
+<p><br /><span class="math display">$$
+A=
+\begin{bmatrix}
+a_{11}&amp;a_{12}&amp;a_{13}&amp;\dots&amp;a_{1n}\\
+a_{21}&amp;a_{22}&amp;a_{23}&amp;\dots&amp;a_{2n}\\
+a_{31}&amp;a_{32}&amp;a_{33}&amp;\dots&amp;a_{3n}\\
+\vdots&amp;\\
+a_{m1}&amp;a_{m2}&amp;a_{m3}&amp;\dots&amp;a_{mn}\\
+\end{bmatrix}
+$$</span><br /></p>
+<p><a href="#definition-voc-vector-of-constants"><strong>Vector of Constants</strong></a></p>
+<p>For a system of linear equations,</p>
+<p><br /><span class="math display">$$\begin{aligned}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&amp;=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&amp;=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&amp;=b_3\\
+\vdots&amp;\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&amp;=b_m
+\end{aligned}$$</span><br /></p>
+<p><a href="#definition-solv-solution-vector"><strong>Solution Vector</strong></a></p>
+<p>For a system of linear equations,</p>
+<p><br /><span class="math display">$$\begin{aligned}
+a_{11}x_1+a_{12}x_2+a_{13}x_3+\dots+a_{1n}x_n&amp;=b_1\\
+a_{21}x_1+a_{22}x_2+a_{23}x_3+\dots+a_{2n}x_n&amp;=b_2\\
+a_{31}x_1+a_{32}x_2+a_{33}x_3+\dots+a_{3n}x_n&amp;=b_3\\
+\vdots&amp;\\
+a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&amp;=b_m
+\end{aligned}$$</span><br /></p>
+<p>The solution vector may do double-duty on occasion. It might refer to a list of variable quantities at one point, and subsequently refer to values of those variables that actually form a particular solution to that system.</p>
+<p><a href="#definition-mrls-matrix-representation-of-a-linear-system"><strong>Matrix Representation of a Linear System</strong></a>. If $A$ is the coefficient matrix of a system of linear equations and <span class="math inline"><em>b</em></span> is the vector of constants, then we will write <span class="math inline">$\$\mathcal L \mathcal S({A}, b)$</span> as a shorthand expression for the system of linear equations, which we will refer to as the <em>matrix representation</em> of the linear system.</p>
+<p><a href="#example-nsle-notation-for-systems-of-linear-equations"><strong>Notation for systems of linear equations</strong></a></p>
+<p>The system of linear equations</p>
+<p><br /><span class="math display">$$\begin{aligned}
+2x_1+4x_2-3x_3+5x_4+x_5&amp;=9\\
+3x_1+x_2+\quad\quad x_4-3x_5&amp;=0\\
+-2x_1+7x_2-5x_3+2x_4+2x_5&amp;=-3
+\end{aligned}$$</span><br /></p>
+<p>has coeffient matrix</p>
+<p><br /><span class="math display">$$
+A=
+\begin{bmatrix}
+2 &amp; 4 &amp; -3 &amp; 5 &amp; 1\\
+3 &amp; 1 &amp; 0 &amp; 1 &amp; -3\\
+-2 &amp; 7 &amp; -5 &amp; 2 &amp; 2
+\end{bmatrix}
+$$</span><br /></p>
+<p>and vector of constants</p>
+<p><br /><span class="math display">$$
+{b}=\begin{bmatrix}
+9\\
+0\\
+-3
+\end{bmatrix}
+$$</span><br /></p>
+<p>and so will be referenced as <span class="math inline">$\$\mathcal L \mathcal S({A}, b)$</span></p>
+<p><a href="#definition-am-augmented-matrix"><strong>Augmented Matrix</strong></a>. Suppose we have a system of $m$ equations in $n$ variables, with coefficient matrix $A$ and vector of constants $\vect{b}$. Then the <em>augmented matrix</em> of the system of equations is the $m\times(n+1)$ matrix whose first $n$ columns are the columns of $A$ and whose last column ($n+1$) is the column vector $\vect{b}$. This matrix will be written as $\augmented{A}{\vect{b}}$.</p>
+<p>The augmented matrix <em>represents</em> all the important information in the system of equations, since the names of the variables have been ignored, and the only connection with the variables is the location of their coefficients in the matrix. It is important to realize that the augmented matrix is just that, a matrix, and <em>not</em> a system of equations. In particular, the augmented matrix does not have any “solutions,” though it will be useful for finding solutions to the system of equations that it is associated with. (Think about your objects, and review <span class="knowl">Proof Technique L</span>.) However, notice that an augmented matrix always belongs to some system of equations, and vice versa, so it is tempting to try and blur the distinction between the two. Here is a quick example.</p>
+<p><a href="#example-amaa-augmented-matrix-for-archetype-a"><strong>Augmented matrix for Archetype A</strong></a></p>
+</div>
+<div id="row-operations" class="section level2">
+<h2><span class="header-section-number">1.2</span> Row Operations</h2>
+<p>An augmented matrix for a system of equations will save us the tedium of continually writing down the names of the variables as we solve the system. It will also release us from any dependence on the actual names of the variables. We have seen how certain operations we can perform on equations (<a href="http://linear.ups.edu/html/section-RREF.html">Definition EO</a>) will preserve their solutions (<a href="http://linear.ups.edu/html/section-RREF.html">Theorem EOPSS</a>). The next two definitions and the following theorem carry over these ideas to augmented matrices.</p>
+<p><a href="#definition-ro-row-operations"><strong>Definition RO: Row Operations</strong></a>. The following three operations will transform an $m\times n$ matrix into a different matrix of the same size, and each is known as a <em>row operation</em>.</p>
+<ol style="list-style-type: decimal">
+<li>Swap the locations of two rows.</li>
+<li>Multiply each entry of a single row by a nonzero quantity.</li>
+<li>Multiply each entry of one row by some quantity, and add these values to the entries in the same columns of a second row. Leave the first row the same after this operation, but replace the second row by the new values.</li>
+</ol>
+<p>We will use a symbolic shorthand to describe these row operations:</p>
+<p><span class="math inline">−2<em>R</em><sub>1</sub> → <em>R</em><sub>2</sub></span></p>
+<ol style="list-style-type: decimal">
+<li><span class="math inline"><em>R</em><sub><em>i</em></sub> ↔ <em>R</em><sub><em>j</em></sub></span>: Swap the location of rows $i$ and $j$.</li>
+<li><span class="math inline"><em>α</em><em>R</em><sub><em>i</em></sub></span>: Multiply row <span class="math inline"><em>i</em></span> by the nonzero scalar <span class="math inline"><em>α</em></span>.</li>
+<li><span class="math inline"><em>α</em><em>R</em><sub><em>i</em></sub> + <em>R</em><sub><em>j</em></sub></span>: Multiply row $i$ by the scalar $\alpha$ and add to row $j$.</li>
+</ol>
+<p><a href="#definition-rem-row-equivalent-matrices"><strong>Row-Equivalent Matrices</strong></a>: Two matrices, $A$ and $B$, are <em>row-equivalent</em> if one can be obtained from the other by a sequence of row operations.</p>
+<p><a href="#example-TREM"><strong>Example TREM: Two row-equivalent matrices</strong></a></p>
+<p>The matrices</p>
+<p><span class="math inline">$A=\begin{bmatrix} 2&amp;-1&amp;3&amp;4\\ 5&amp;2&amp;-2&amp;3\\ 1&amp;1&amp;0&amp;6 \end{bmatrix}$</span> <span class="math inline">$B=\begin{bmatrix}  1&amp;1&amp;0&amp;6\\  3&amp;0&amp;-2&amp;-9\\  2&amp;-1&amp;3&amp;4  \end{bmatrix}$</span></p>
+<p>are row-equivalent as can be seen from</p>
+<p><br /><span class="math display">$$\begin{bmatrix}
+2&amp;-1&amp;3&amp;4\\
+5&amp;2&amp;-2&amp;3\\
+1&amp;1&amp;0&amp;6
+\end{bmatrix}$$</span><br /> <br /><span class="math display"><em>R</em><sub>1</sub> → <em>R</em><sub>3</sub></span><br /> <br /><span class="math display">$$\begin{bmatrix}
+1&amp;1&amp;0&amp;6\\
+5&amp;2&amp;-2&amp;3\\
+2&amp;-1&amp;3&amp;4
+\end{bmatrix}$$</span><br /> <br /><span class="math display">−2<em>R</em><sub>1</sub> → <em>R</em><sub>2</sub></span><br /> <br /><span class="math display">$$\begin{bmatrix}
+\&amp;1&amp;0&amp;6\\
+3&amp;0&amp;-2&amp;-9\\
+2&amp;-1&amp;3&amp;4
+\end{bmatrix}$$</span><br /></p>
+<p>We can also say that any pair of these three matrices are row-equivalent.</p>
+<p>Notice that each of the three row operations is reversible (<span>Exercise RREF.T10</span>), so we do not have to be careful about the distinction between “$A$ is row-equivalent to $B$” and “$B$ is row-equivalent to $A$.” (<span>Exercise RREF.T11</span>)</p>
+<p>The preceding definitions are designed to make the following theorem possible. It says that row-equivalent matrices represent systems of linear equations that have identical solution sets.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"search": true
+});
+});
+</script>
+
+</body>
+
+</html>
