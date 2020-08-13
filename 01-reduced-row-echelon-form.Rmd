@@ -120,7 +120,7 @@ There is much more to say about how Sage works with matrices, but this is alread
 
 When we do equation operations on system of equations, the names of the variables really are not very important. Use $x_1$, $x_2$, $x_3$, or $a$, $b$, $c$, or $x$, $y$, $z$, it really does not matter. In this subsection we will describe some notation that will make it easier to describe linear systems, solve the systems and describe the solution sets. Here is a list of definitions, laden with notation.
 
-**Definition CV: Column Vector.** A _column vector_ of _size_ $m$ is an ordered list of $m$ numbers, which is written in order vertically, starting at the top and proceeding to the bottom. At times, we will refer to a column vector as simply a _vector_. Column vectors will be written in bold, usually with lower case Latin letter from the end of the alphabet such as ${u}, ${v}, ${w}, ${x}, ${y}$, ${z}$. Some books like to write vectors with arrows, such as ${u}$. Writing by hand, some like to put arrows on top of the symbol, or a tilde underneath the symbol, as in $\underset{\sim}{\textstyle u}$. To refer to the _entry_ or _component_ of vector ${v}$ in location $i$ of the list, we write $[{v}]_{i}$.
+**Definition CV: Column Vector.** A _column vector_ of _size_ $m$ is an ordered list of $m$ numbers, which is written in order vertically, starting at the top and proceeding to the bottom. At times, we will refer to a column vector as simply a _vector_. Column vectors will be written in bold, usually with lower case Latin letter from the end of the alphabet such as ${u}$, ${v}$, ${w}$, ${x}$, ${y}$, ${z}$. Some books like to write vectors with arrows, such as ${u}$. Writing by hand, some like to put arrows on top of the symbol, or a tilde underneath the symbol, as in $\underset{\sim}{\textstyle u}$. To refer to the _entry_ or _component_ of vector ${v}$ in location $i$ of the list, we write $[{v}]_{i}$.
 
 Be careful with this notation. While the symbols ${v}_{i}$ might look somewhat substantial, as an object this represents just one entry of a vector, which is just a single complex number.
 
@@ -189,7 +189,7 @@ a_{m1}x_1+a_{m2}x_2+a_{m3}x_3+\dots+a_{mn}x_n&=b_m
 
 The solution vector may do double-duty on occasion. It might refer to a list of variable quantities at one point, and subsequently refer to values of those variables that actually form a particular solution to that system.
 
-[**Matrix Representation of a Linear System**](#definition-mrls-matrix-representation-of-a-linear-system). If \$A\$ is the coefficient matrix of a system of linear equations and ${b}$ is the vector of constants, then we will write $\$\mathcal L \mathcal S({A}, b)$ as a shorthand expression for the system of linear equations, which we will refer to as the *matrix representation* of the linear system.
+[**Matrix Representation of a Linear System**](#definition-mrls-matrix-representation-of-a-linear-system). If $A$ is the coefficient matrix of a system of linear equations and ${b}$ is the vector of constants, then we will write $\mathcal L \mathcal S({A}, b)$ as a shorthand expression for the system of linear equations, which we will refer to as the *matrix representation* of the linear system.
 
 [**Notation for systems of linear equations**](#example-nsle-notation-for-systems-of-linear-equations)
 
@@ -222,9 +222,9 @@ $$
 \end{bmatrix}
 $$
 
-and so will be referenced as $\$\mathcal L \mathcal S({A}, b)$
+and so will be referenced as $\mathcal L \mathcal S({A}, b)$
 
-[**Augmented Matrix**](#definition-am-augmented-matrix). Suppose we have a system of \$m\$ equations in \$n\$ variables, with coefficient matrix \$A\$ and vector of constants \$\\vect{b}\$. Then the *augmented matrix* of the system of equations is the \$m\\times(n+1)\$ matrix whose first \$n\$ columns are the columns of \$A\$ and whose last column (\$n+1\$) is the column vector \$\\vect{b}\$. This matrix will be written as \$\\augmented{A}{\\vect{b}}\$.
+[**Augmented Matrix**](#definition-am-augmented-matrix). Suppose we have a system of $m$ equations in $n$ variables, with coefficient matrix $A$ and vector of constants ${b}$. Then the *augmented matrix* of the system of equations is the $m\times(n+1)$ matrix whose first $n$ columns are the columns of $A$ and whose last column ($n+1$) is the column vector ${b}$. This matrix will be written as $[A|b]$.
 
 The augmented matrix *represents* all the important information in the system of equations, since the names of the variables have been ignored, and the only connection with the variables is the location of their coefficients in the matrix. It is important to realize that the augmented matrix is just that, a matrix, and *not* a system of equations. In particular, the augmented matrix does not have any “solutions,” though it will be useful for finding solutions to the system of equations that it is associated with. (Think about your objects, and review [Proof Technique L]{.knowl}.) However, notice that an augmented matrix always belongs to some system of equations, and vice versa, so it is tempting to try and blur the distinction between the two. Here is a quick example.
 
@@ -288,6 +288,6 @@ $$\begin{bmatrix}
 
 We can also say that any pair of these three matrices are row-equivalent.
 
-Notice that each of the three row operations is reversible ([Exercise RREF.T10]{}), so we do not have to be careful about the distinction between “\$A\$ is row-equivalent to \$B\$” and “\$B\$ is row-equivalent to \$A\$.” ([Exercise RREF.T11]{})
+Notice that each of the three row operations is reversible ([Exercise RREF.T10]{}), so we do not have to be careful about the distinction between “$A$ is row-equivalent to $B$” and “$B$ is row-equivalent to $A$.” ([Exercise RREF.T11]{})
 
 The preceding definitions are designed to make the following theorem possible. It says that row-equivalent matrices represent systems of linear equations that have identical solution sets.
